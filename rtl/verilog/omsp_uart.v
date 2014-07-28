@@ -297,7 +297,7 @@ wire     uart_rxd_sync_n;
 
 omsp_sync_cell sync_cell_uart_rxd (
     .data_out  (uart_rxd_sync_n),
-    .data_meta (),
+    //.data_meta (),
     .data_in   (~uart_rxd),
     .clk       (mclk),
     .rst       (puc_rst)
