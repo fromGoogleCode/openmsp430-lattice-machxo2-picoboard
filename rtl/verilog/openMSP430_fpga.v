@@ -37,14 +37,12 @@
 // $LastChangedDate: 2012-10-16 03:05:05 +0530 (Tue, 16 Oct 2012) $
 //----------------------------------------------------------------------------
 `include "openMSP430_defines.v"
-
+`define min_hw 
 module openMSP430_fpga (
 
-// Clock Sources
-    CLK_50MHz,
-    CLK_SOCKET,
-
+    reset_ip ,	    
 // Slide Switches
+`ifndef min_hw 
     SW7,
     SW6,
     SW5,
@@ -53,13 +51,14 @@ module openMSP430_fpga (
     SW2,
     SW1,
     SW0,
-
+`endif
 // Push Button Switches
+/*
     BTN3,
     BTN2,
     BTN1,
     BTN0,
-
+*/
 // LEDs
     LED7,
     LED6,
@@ -71,6 +70,7 @@ module openMSP430_fpga (
     LED0,
 
 // Four-Sigit, Seven-Segment LED Display
+`ifndef min_hw 
     SEG_A,
     SEG_B,
     SEG_C,
@@ -85,88 +85,17 @@ module openMSP430_fpga (
     SEG_AN3,
 
 // RS-232 Port
-    UART_RXD,
-    UART_TXD,
     UART_RXD_A,
     UART_TXD_A,
-
-// PS/2 Mouse/Keyboard Port
-    PS2_D,
-    PS2_C,
-
-// Fast, Asynchronous SRAM
-    SRAM_A17,	            // Address Bus Connections
-    SRAM_A16,
-    SRAM_A15,
-    SRAM_A14,
-    SRAM_A13,
-    SRAM_A12,
-    SRAM_A11,
-    SRAM_A10,
-    SRAM_A9,
-    SRAM_A8,
-    SRAM_A7,
-    SRAM_A6,
-    SRAM_A5,
-    SRAM_A4,
-    SRAM_A3,
-    SRAM_A2,
-    SRAM_A1,
-    SRAM_A0,
-    SRAM_OE,                // Write enable and output enable control signals
-    SRAM_WE,
-    SRAM0_IO15,             // SRAM Data signals, chip enables, and byte enables
-    SRAM0_IO14,
-    SRAM0_IO13,
-    SRAM0_IO12,
-    SRAM0_IO11,
-    SRAM0_IO10,
-    SRAM0_IO9,
-    SRAM0_IO8,
-    SRAM0_IO7,
-    SRAM0_IO6,
-    SRAM0_IO5,
-    SRAM0_IO4,
-    SRAM0_IO3,
-    SRAM0_IO2,
-    SRAM0_IO1,
-    SRAM0_IO0,
-    SRAM0_CE1,
-    SRAM0_UB1,
-    SRAM0_LB1,
-    SRAM1_IO15,
-    SRAM1_IO14,
-    SRAM1_IO13,
-    SRAM1_IO12,
-    SRAM1_IO11,
-    SRAM1_IO10,
-    SRAM1_IO9,
-    SRAM1_IO8,
-    SRAM1_IO7,
-    SRAM1_IO6,
-    SRAM1_IO5,
-    SRAM1_IO4,
-    SRAM1_IO3,
-    SRAM1_IO2,
-    SRAM1_IO1,
-    SRAM1_IO0,
-    SRAM1_CE2,
-    SRAM1_UB2,
-    SRAM1_LB2,
-
-// VGA Port
-    VGA_R,
-    VGA_G,
-    VGA_B,
-    VGA_HS,
-    VGA_VS
+`endif
+    UART_RXD,
+    UART_TXD
 );
 
-// Clock Sources
-input     CLK_50MHz;
-input     CLK_SOCKET;
+input     reset_ip;
 
 // Slide Switches
+`ifndef min_hw 
 input     SW7;
 input     SW6;
 input     SW5;
@@ -175,13 +104,14 @@ input     SW3;
 input     SW2;
 input     SW1;
 input     SW0;
-
+`endif
 // Push Button Switches
+/*
 input     BTN3;
 input     BTN2;
 input     BTN1;
 input     BTN0;
-
+*/
 // LEDs
 output    LED7;
 output    LED6;
@@ -193,6 +123,7 @@ output    LED1;
 output    LED0;
 
 // Four-Sigit, Seven-Segment LED Display
+`ifndef min_hw 
 output    SEG_A;
 output    SEG_B;
 output    SEG_C;
@@ -207,82 +138,11 @@ output    SEG_AN2;
 output    SEG_AN3;
 
 // RS-232 Port
-input     UART_RXD;
-output    UART_TXD;
 input     UART_RXD_A;
 output    UART_TXD_A;
-
-// PS/2 Mouse/Keyboard Port
-inout     PS2_D;
-output    PS2_C;
-
-// Fast, Asynchronous SRAM
-output    SRAM_A17;	    // Address Bus Connections
-output    SRAM_A16;
-output    SRAM_A15;
-output    SRAM_A14;
-output    SRAM_A13;
-output    SRAM_A12;
-output    SRAM_A11;
-output    SRAM_A10;
-output    SRAM_A9;
-output    SRAM_A8;
-output    SRAM_A7;
-output    SRAM_A6;
-output    SRAM_A5;
-output    SRAM_A4;
-output    SRAM_A3;
-output    SRAM_A2;
-output    SRAM_A1;
-output    SRAM_A0;
-output    SRAM_OE;          // Write enable and output enable control signals
-output    SRAM_WE;
-inout     SRAM0_IO15;       // SRAM Data signals, chip enables, and byte enables
-inout     SRAM0_IO14;
-inout     SRAM0_IO13;
-inout     SRAM0_IO12;
-inout     SRAM0_IO11;
-inout     SRAM0_IO10;
-inout     SRAM0_IO9;
-inout     SRAM0_IO8;
-inout     SRAM0_IO7;
-inout     SRAM0_IO6;
-inout     SRAM0_IO5;
-inout     SRAM0_IO4;
-inout     SRAM0_IO3;
-inout     SRAM0_IO2;
-inout     SRAM0_IO1;
-inout     SRAM0_IO0;
-output    SRAM0_CE1;
-output    SRAM0_UB1;
-output    SRAM0_LB1;
-inout     SRAM1_IO15;
-inout     SRAM1_IO14;
-inout     SRAM1_IO13;
-inout     SRAM1_IO12;
-inout     SRAM1_IO11;
-inout     SRAM1_IO10;
-inout     SRAM1_IO9;
-inout     SRAM1_IO8;
-inout     SRAM1_IO7;
-inout     SRAM1_IO6;
-inout     SRAM1_IO5;
-inout     SRAM1_IO4;
-inout     SRAM1_IO3;
-inout     SRAM1_IO2;
-inout     SRAM1_IO1;
-inout     SRAM1_IO0;
-output    SRAM1_CE2;
-output    SRAM1_UB2;
-output    SRAM1_LB2;
-
-// VGA Port
-output    VGA_R;
-output    VGA_G;
-output    VGA_B;
-output    VGA_HS;
-output    VGA_VS;
-
+`endif
+input     UART_RXD;
+output    UART_TXD;
 
 //=============================================================================
 // 1)  INTERNAL WIRES/REGISTERS/PARAMETERS DECLARATION
@@ -342,142 +202,18 @@ wire               reset_pin;
 //=============================================================================
 // 2)  CLOCK GENERATION
 //=============================================================================
+defparam OSCH_inst.NOM_FREQ = "20.46"; 
 
-// Input buffers
-//------------------------
-IBUFG ibuf_clk_main   (.O(clk_50M_in),    .I(CLK_50MHz));
-IBUFG ibuf_clk_socket (.O(clk_socket_in), .I(CLK_SOCKET));
-
-
-// Digital Clock Manager
-//------------------------
-
-// Generate 20MHz clock from 50MHz on-board oscillator
-//`define DCM_FX_MODE
-`ifdef DCM_FX_MODE
-DCM dcm_adv_clk_main (
-
-// OUTPUTs
-    .CLK0         (),
-    .CLK90        (),
-    .CLK180       (),
-    .CLK270       (),
-    .CLK2X        (), 
-    .CLK2X180     (),
-    .CLKDV        (),
-    .CLKFX        (dcm_clk),
-    .CLKFX180     (),
-    .PSDONE       (), 
-    .STATUS       (),
-    .LOCKED       (dcm_locked),
-
-// INPUTs
-    .CLKIN        (clk_50M_in),
-    .CLKFB        (1'b0),
-    .PSINCDEC     (1'b0),
-    .PSEN         (1'b0),
-    .DSSEN        (1'b0),
-    .RST          (reset_pin),
-    .PSCLK        (1'b0)
+OSCH OSCH_inst (
+.STDBY (1'b0) ,
+.OSC (clk_sys) ,
+.SEDSTDBY ()
 );
 
-// synopsys translate_off
-defparam dcm_adv_clk_main.CLK_FEEDBACK          = "NONE";
-defparam dcm_adv_clk_main.CLKDV_DIVIDE          = 2.5;
-defparam dcm_adv_clk_main.CLKIN_DIVIDE_BY_2     = "FALSE";
-defparam dcm_adv_clk_main.CLKIN_PERIOD          = 20.0;
-defparam dcm_adv_clk_main.CLKOUT_PHASE_SHIFT    = "NONE";
-defparam dcm_adv_clk_main.DESKEW_ADJUST         = "SYSTEM_SYNCHRONOUS";
-defparam dcm_adv_clk_main.DFS_FREQUENCY_MODE    = "LOW";
-defparam dcm_adv_clk_main.DLL_FREQUENCY_MODE    = "LOW";
-defparam dcm_adv_clk_main.DUTY_CYCLE_CORRECTION = "TRUE";
-defparam dcm_adv_clk_main.FACTORY_JF            = 16'hC080;
-defparam dcm_adv_clk_main.PHASE_SHIFT           = 0;
-defparam dcm_adv_clk_main.STARTUP_WAIT          = "FALSE";
-
-defparam dcm_adv_clk_main.CLKFX_DIVIDE          = 5;
-defparam dcm_adv_clk_main.CLKFX_MULTIPLY        = 2;
-// synopsys translate_on
-`else
-DCM dcm_adv_clk_main (
-
-// OUTPUTs
-    .CLKDV        (dcm_clk), 
-    .CLKFX        (), 
-    .CLKFX180     (), 
-    .CLK0         (CLK0_BUF), 
-    .CLK2X        (), 
-    .CLK2X180     (), 
-    .CLK90        (), 
-    .CLK180       (), 
-    .CLK270       (), 
-    .LOCKED       (dcm_locked), 
-    .PSDONE       (), 
-    .STATUS       (),
-
-// INPUTs
-    .CLKFB        (CLKFB_IN), 
-    .CLKIN        (clk_50M_in), 
-    .PSEN         (1'b0), 
-    .PSINCDEC     (1'b0), 
-    .DSSEN        (1'b0), 
-    .PSCLK        (1'b0), 
-    .RST          (reset_pin) 
-);
-BUFG CLK0_BUFG_INST (
-    .I(CLK0_BUF), 
-    .O(CLKFB_IN)
-);
-
-// synopsys translate_off
-defparam dcm_adv_clk_main.CLK_FEEDBACK          = "1X";
-defparam dcm_adv_clk_main.CLKDV_DIVIDE          = 2.5;
-defparam dcm_adv_clk_main.CLKFX_DIVIDE          = 1;
-defparam dcm_adv_clk_main.CLKFX_MULTIPLY        = 4;
-defparam dcm_adv_clk_main.CLKIN_DIVIDE_BY_2     = "FALSE";
-defparam dcm_adv_clk_main.CLKIN_PERIOD          = 20.000;
-defparam dcm_adv_clk_main.CLKOUT_PHASE_SHIFT    = "NONE";
-defparam dcm_adv_clk_main.DESKEW_ADJUST         = "SYSTEM_SYNCHRONOUS";
-defparam dcm_adv_clk_main.DFS_FREQUENCY_MODE    = "LOW";
-defparam dcm_adv_clk_main.DLL_FREQUENCY_MODE    = "LOW";
-defparam dcm_adv_clk_main.DUTY_CYCLE_CORRECTION = "TRUE";
-defparam dcm_adv_clk_main.FACTORY_JF            = 16'h8080;
-defparam dcm_adv_clk_main.PHASE_SHIFT           = 0;
-defparam dcm_adv_clk_main.STARTUP_WAIT          = "FALSE";
-// synopsys translate_on  
-`endif
-
-   
-//wire 	  dcm_locked = 1'b1;
-//wire      reset_n;
-   
-//reg 	  dcm_clk;
-//always @(posedge clk_50M_in)
-//  if (~reset_n) dcm_clk <= 1'b0;
-//  else          dcm_clk <= ~dcm_clk;
-   
-
-// Clock buffers
-//------------------------
-BUFG  buf_sys_clock  (.O(clk_sys), .I(dcm_clk));
-
-
-//=============================================================================
-// 3)  RESET GENERATION & FPGA STARTUP
+// 2)  RESET GENERATION
 //=============================================================================
 
-// Reset input buffer
-IBUF   ibuf_reset_n   (.O(reset_pin), .I(BTN3));
-wire reset_pin_n = ~reset_pin;
-
-// Release the reset only, if the DCM is locked
-assign  reset_n = reset_pin_n & dcm_locked;
-
-//Include the startup device   
-wire  gsr_tb;
-wire  gts_tb;
-STARTUP_SPARTAN3 xstartup (.CLK(clk_sys), .GSR(gsr_tb), .GTS(gts_tb));
-
+assign  reset_n = reset_ip;
 
 //=============================================================================
 // 4)  OPENMSP430
@@ -630,7 +366,7 @@ omsp_timerA timerA_0 (
 //
 // Four-Digit, Seven-Segment LED Display driver
 //----------------------------------------------
-
+`ifndef min_hw
 driver_7segment driver_7segment_0 (
 
 // OUTPUTs
@@ -656,12 +392,12 @@ driver_7segment driver_7segment_0 (
     .per_we       (per_we),        // Peripheral write enable (high active)
     .puc_rst      (puc_rst)        // Main system reset
 );
-
+`endif
 
 //
 // Simple full duplex UART (8N1 protocol)
 //----------------------------------------
-
+`ifndef min_hw
 omsp_uart #(.BASE_ADDR(15'h0080)) uart_0 (
 
 // OUTPUTs
@@ -680,8 +416,7 @@ omsp_uart #(.BASE_ADDR(15'h0080)) uart_0 (
     .smclk_en     (smclk_en),      // SMCLK enable (from CPU)
     .uart_rxd     (hw_uart_rxd)    // UART Data Receive (RXD)
 );
-
-
+`endif
 //
 // Combine peripheral data buses
 //-------------------------------
@@ -826,41 +561,45 @@ io_mux #8 io_mux_p2 (
 //=============================================================================
 
 // Data Memory
-ram_8x512_hi ram_8x512_hi_0 (
-    .addr         (dmem_addr),
-    .clk          (clk_sys),
-    .din          (dmem_din[15:8]),
-    .dout         (dmem_dout[15:8]),
-    .en           (dmem_cen),
-    .we           (dmem_wen[1])
+ram_8x512 ram_8x512_hi_0 (
+    .Address         (dmem_addr),
+    .Clock           (clk_sys),
+    .Data            (dmem_din[15:8]),
+    .Q               (dmem_dout[15:8]),
+    .ClockEn         (~dmem_cen),
+    .Reset           (~reset_n),
+    .WE              (~dmem_wen[1])
 );
-ram_8x512_lo ram_8x512_lo_0 (
-    .addr         (dmem_addr),
-    .clk          (clk_sys),
-    .din          (dmem_din[7:0]),
-    .dout         (dmem_dout[7:0]),
-    .en           (dmem_cen),
-    .we           (dmem_wen[0])
+ram_8x512 ram_8x512_lo_0 (
+    .Address         (dmem_addr),
+    .Clock           (clk_sys),
+    .Data            (dmem_din[7:0]),
+    .Q               (dmem_dout[7:0]),
+    .ClockEn         (~dmem_cen),
+    .Reset           (~reset_n),
+    .WE              (~dmem_wen[0])
 );
 
 
 // Program Memory
-rom_8x2k_hi rom_8x2k_hi_0 (
-    .addr         (pmem_addr),
-    .clk          (clk_sys),
-    .din          (pmem_din[15:8]),
-    .dout         (pmem_dout[15:8]),
-    .en           (pmem_cen),
-    .we           (pmem_wen[1])
+ram_8x2k rom_8x2k_hi_0 (
+    .Address         (pmem_addr),
+    .Clock           (clk_sys),
+    .Data            (pmem_din[15:8]),
+    .Q               (pmem_dout[15:8]),
+    .ClockEn         (~pmem_cen),
+    .Reset           (~reset_n),
+    .WE              (~pmem_wen[1])
 );
 
-rom_8x2k_lo rom_8x2k_lo_0 (
-    .addr         (pmem_addr),
-    .clk          (clk_sys),
-    .din          (pmem_din[7:0]),
-    .dout         (pmem_dout[7:0]),
-    .en           (pmem_cen),
-    .we           (pmem_wen[0])
+ram_8x2k rom_8x2k_lo_0 (
+    .Address         (pmem_addr),
+    .Clock           (clk_sys),
+    .Data            (pmem_din[7:0]),
+    .Q               (pmem_dout[7:0]),
+    .ClockEn         (~pmem_cen),
+    .Reset           (~reset_n),
+    .WE              (~pmem_wen[0])
 );
 
 
@@ -872,47 +611,45 @@ rom_8x2k_lo rom_8x2k_lo_0 (
 
 // Slide Switches (Port 1 inputs)
 //--------------------------------
-IBUF  SW7_PIN        (.O(p3_din[7]),                   .I(SW7));
-IBUF  SW6_PIN        (.O(p3_din[6]),                   .I(SW6));
-IBUF  SW5_PIN        (.O(p3_din[5]),                   .I(SW5));
-IBUF  SW4_PIN        (.O(p3_din[4]),                   .I(SW4));
-IBUF  SW3_PIN        (.O(p3_din[3]),                   .I(SW3));
-IBUF  SW2_PIN        (.O(p3_din[2]),                   .I(SW2));
-IBUF  SW1_PIN        (.O(p3_din[1]),                   .I(SW1));
-IBUF  SW0_PIN        (.O(p3_din[0]),                   .I(SW0));
-
+`ifndef min_hw 
+assign p3_din[0] = SW0 ;
+assign p3_din[1] = SW1 ;
+assign p3_din[2] = SW2 ;
+assign p3_din[3] = SW3 ;
+assign p3_din[4] = SW4 ;
+assign p3_din[5] = SW5 ;
+assign p3_din[6] = SW6 ;
+assign p3_din[7] = SW7 ;
+`endif
 // LEDs (Port 1 outputs)
 //-----------------------
-OBUF  LED7_PIN       (.I(p3_dout[7] & p3_dout_en[7]),  .O(LED7));
-OBUF  LED6_PIN       (.I(p3_dout[6] & p3_dout_en[6]),  .O(LED6));
-OBUF  LED5_PIN       (.I(p3_dout[5] & p3_dout_en[5]),  .O(LED5));
-OBUF  LED4_PIN       (.I(p3_dout[4] & p3_dout_en[4]),  .O(LED4));
-OBUF  LED3_PIN       (.I(p3_dout[3] & p3_dout_en[3]),  .O(LED3));
-OBUF  LED2_PIN       (.I(p3_dout[2] & p3_dout_en[2]),  .O(LED2));
-OBUF  LED1_PIN       (.I(p3_dout[1] & p3_dout_en[1]),  .O(LED1));
-OBUF  LED0_PIN       (.I(p3_dout[0] & p3_dout_en[0]),  .O(LED0));
-   
-// Push Button Switches
-//----------------------
-IBUF  BTN2_PIN       (.O(),                            .I(BTN2));
-IBUF  BTN1_PIN       (.O(),                            .I(BTN1));
-IBUF  BTN0_PIN       (.O(),                            .I(BTN0));
+assign LED0 = p3_dout[0] & p3_dout_en[0] ;
+assign LED1 = p3_dout[1] & p3_dout_en[1] ;
+assign LED2 = p3_dout[2] & p3_dout_en[2] ;
+assign LED3 = p3_dout[3] & p3_dout_en[3] ;
+assign LED4 = p3_dout[4] & p3_dout_en[4] ;
+assign LED5 = p3_dout[5] & p3_dout_en[5] ;
+assign LED6 = p3_dout[6] & p3_dout_en[6] ;
+assign LED7 = p3_dout[7] & p3_dout_en[7] ;
 
 // Four-Sigit, Seven-Segment LED Display
 //---------------------------------------
-OBUF  SEG_A_PIN      (.I(seg_a_),                      .O(SEG_A));
-OBUF  SEG_B_PIN      (.I(seg_b_),                      .O(SEG_B));
-OBUF  SEG_C_PIN      (.I(seg_c_),                      .O(SEG_C));
-OBUF  SEG_D_PIN      (.I(seg_d_),                      .O(SEG_D));
-OBUF  SEG_E_PIN      (.I(seg_e_),                      .O(SEG_E));
-OBUF  SEG_F_PIN      (.I(seg_f_),                      .O(SEG_F));
-OBUF  SEG_G_PIN      (.I(seg_g_),                      .O(SEG_G));
-OBUF  SEG_DP_PIN     (.I(seg_dp_),                     .O(SEG_DP));
-OBUF  SEG_AN0_PIN    (.I(seg_an0_),                    .O(SEG_AN0));
-OBUF  SEG_AN1_PIN    (.I(seg_an1_),                    .O(SEG_AN1));
-OBUF  SEG_AN2_PIN    (.I(seg_an2_),                    .O(SEG_AN2));
-OBUF  SEG_AN3_PIN    (.I(seg_an3_),                    .O(SEG_AN3));
-
+`ifndef min_hw 
+assign SEG_A = seg_a_;
+assign SEG_B = seg_b_;
+assign SEG_C = seg_c_;
+assign SEG_D = seg_d_;
+assign SEG_E = seg_e_;
+assign SEG_F = seg_f_;
+assign SEG_G = seg_g_;
+assign SEG_DP= seg_dp_;
+assign SEG_AN0 = seg_an0_;
+assign SEG_AN1 = seg_an1_;
+assign SEG_AN2 = seg_an2_;
+assign SEG_AN3 = seg_an3_;
+assign hw_uart_rxd = UART_RXD_A ;
+assign UART_TXD_A = hw_uart_txd ;
+`endif
 // RS-232 Port
 //----------------------
 // P1.1 (TX) and P2.2 (RX)
@@ -920,110 +657,7 @@ assign p1_io_din      = 8'h00;
 assign p2_io_din[7:3] = 5'h00;
 assign p2_io_din[1:0] = 2'h0;
 
-// Mux the RS-232 port between:
-//   - GPIO port P1.1 (TX) / P2.2 (RX)
-//   - the debug interface.
-//   - the simple hardware UART
-//
-// The mux is controlled with the SW0/SW1 switches:
-//        00 = debug interface
-//        01 = GPIO
-//        10 = simple hardware uart
-//        11 = debug interface
-wire sdi_select  = ({p3_din[1], p3_din[0]}==2'b00) |
-                   ({p3_din[1], p3_din[0]}==2'b11);
-wire gpio_select = ({p3_din[1], p3_din[0]}==2'b01);
-wire uart_select = ({p3_din[1], p3_din[0]}==2'b10);
-
-wire   uart_txd_out = gpio_select ? p1_io_dout[1]  :
-                      uart_select ? hw_uart_txd    : dbg_uart_txd;
-
-wire   uart_rxd_in;
-assign p2_io_din[2] = gpio_select ? uart_rxd_in : 1'b1;
-assign hw_uart_rxd  = uart_select ? uart_rxd_in : 1'b1;
-assign dbg_uart_rxd = sdi_select  ? uart_rxd_in : 1'b1;
-
-IBUF  UART_RXD_PIN   (.O(uart_rxd_in),                 .I(UART_RXD));
-OBUF  UART_TXD_PIN   (.I(uart_txd_out),                .O(UART_TXD));
-
-IBUF  UART_RXD_A_PIN (.O(),                            .I(UART_RXD_A));
-OBUF  UART_TXD_A_PIN (.I(1'b0),                        .O(UART_TXD_A));
-
+assign dbg_uart_rxd = UART_RXD;
+assign UART_TXD =  dbg_uart_txd ;
    
-// PS/2 Mouse/Keyboard Port
-//--------------------------
-IOBUF PS2_D_PIN      (.O(), .I(1'b0), .T(1'b1),        .IO(PS2_D));
-OBUF  PS2_C_PIN      (.I(1'b0),                        .O(PS2_C));
-
-// Fast, Asynchronous SRAM
-//--------------------------
-OBUF  SRAM_A17_PIN   (.I(1'b0),                        .O(SRAM_A17));
-OBUF  SRAM_A16_PIN   (.I(1'b0),                        .O(SRAM_A16));
-OBUF  SRAM_A15_PIN   (.I(1'b0),                        .O(SRAM_A15));
-OBUF  SRAM_A14_PIN   (.I(1'b0),                        .O(SRAM_A14));
-OBUF  SRAM_A13_PIN   (.I(1'b0),                        .O(SRAM_A13));
-OBUF  SRAM_A12_PIN   (.I(1'b0),                        .O(SRAM_A12));
-OBUF  SRAM_A11_PIN   (.I(1'b0),                        .O(SRAM_A11));
-OBUF  SRAM_A10_PIN   (.I(1'b0),                        .O(SRAM_A10));
-OBUF  SRAM_A9_PIN    (.I(1'b0),                        .O(SRAM_A9));
-OBUF  SRAM_A8_PIN    (.I(1'b0),                        .O(SRAM_A8));
-OBUF  SRAM_A7_PIN    (.I(1'b0),                        .O(SRAM_A7));
-OBUF  SRAM_A6_PIN    (.I(1'b0),                        .O(SRAM_A6));
-OBUF  SRAM_A5_PIN    (.I(1'b0),                        .O(SRAM_A5));
-OBUF  SRAM_A4_PIN    (.I(1'b0),                        .O(SRAM_A4));
-OBUF  SRAM_A3_PIN    (.I(1'b0),                        .O(SRAM_A3));
-OBUF  SRAM_A2_PIN    (.I(1'b0),                        .O(SRAM_A2));
-OBUF  SRAM_A1_PIN    (.I(1'b0),                        .O(SRAM_A1));
-OBUF  SRAM_A0_PIN    (.I(1'b0),                        .O(SRAM_A0));
-OBUF  SRAM_OE_PIN    (.I(1'b1),                        .O(SRAM_OE));
-OBUF  SRAM_WE_PIN    (.I(1'b1),                        .O(SRAM_WE));
-IOBUF SRAM0_IO15_PIN (.O(), .I(1'b0), .T(1'b1),        .IO(SRAM0_IO15));
-IOBUF SRAM0_IO14_PIN (.O(), .I(1'b0), .T(1'b1),        .IO(SRAM0_IO14));
-IOBUF SRAM0_IO13_PIN (.O(), .I(1'b0), .T(1'b1),        .IO(SRAM0_IO13));
-IOBUF SRAM0_IO12_PIN (.O(), .I(1'b0), .T(1'b1),        .IO(SRAM0_IO12));
-IOBUF SRAM0_IO11_PIN (.O(), .I(1'b0), .T(1'b1),        .IO(SRAM0_IO11));
-IOBUF SRAM0_IO10_PIN (.O(), .I(1'b0), .T(1'b1),        .IO(SRAM0_IO10));
-IOBUF SRAM0_IO9_PIN  (.O(), .I(1'b0), .T(1'b1),        .IO(SRAM0_IO9));
-IOBUF SRAM0_IO8_PIN  (.O(), .I(1'b0), .T(1'b1),        .IO(SRAM0_IO8));
-IOBUF SRAM0_IO7_PIN  (.O(), .I(1'b0), .T(1'b1),        .IO(SRAM0_IO7));
-IOBUF SRAM0_IO6_PIN  (.O(), .I(1'b0), .T(1'b1),        .IO(SRAM0_IO6));
-IOBUF SRAM0_IO5_PIN  (.O(), .I(1'b0), .T(1'b1),        .IO(SRAM0_IO5));
-IOBUF SRAM0_IO4_PIN  (.O(), .I(1'b0), .T(1'b1),        .IO(SRAM0_IO4));
-IOBUF SRAM0_IO3_PIN  (.O(), .I(1'b0), .T(1'b1),        .IO(SRAM0_IO3));
-IOBUF SRAM0_IO2_PIN  (.O(), .I(1'b0), .T(1'b1),        .IO(SRAM0_IO2));
-IOBUF SRAM0_IO1_PIN  (.O(), .I(1'b0), .T(1'b1),        .IO(SRAM0_IO1));
-IOBUF SRAM0_IO0_PIN  (.O(), .I(1'b0), .T(1'b1),        .IO(SRAM0_IO0));
-OBUF  SRAM0_CE1_PIN  (.I(1'b1),                        .O(SRAM0_CE1));
-OBUF  SRAM0_UB1_PIN  (.I(1'b1),                        .O(SRAM0_UB1));
-OBUF  SRAM0_LB1_PIN  (.I(1'b1),                        .O(SRAM0_LB1));
-IOBUF SRAM1_IO15_PIN (.O(), .I(1'b0), .T(1'b1),        .IO(SRAM1_IO15));
-IOBUF SRAM1_IO14_PIN (.O(), .I(1'b0), .T(1'b1),        .IO(SRAM1_IO14));
-IOBUF SRAM1_IO13_PIN (.O(), .I(1'b0), .T(1'b1),        .IO(SRAM1_IO13));
-IOBUF SRAM1_IO12_PIN (.O(), .I(1'b0), .T(1'b1),        .IO(SRAM1_IO12));
-IOBUF SRAM1_IO11_PIN (.O(), .I(1'b0), .T(1'b1),        .IO(SRAM1_IO11));
-IOBUF SRAM1_IO10_PIN (.O(), .I(1'b0), .T(1'b1),        .IO(SRAM1_IO10));
-IOBUF SRAM1_IO9_PIN  (.O(), .I(1'b0), .T(1'b1),        .IO(SRAM1_IO9));
-IOBUF SRAM1_IO8_PIN  (.O(), .I(1'b0), .T(1'b1),        .IO(SRAM1_IO8));
-IOBUF SRAM1_IO7_PIN  (.O(), .I(1'b0), .T(1'b1),        .IO(SRAM1_IO7));
-IOBUF SRAM1_IO6_PIN  (.O(), .I(1'b0), .T(1'b1),        .IO(SRAM1_IO6));
-IOBUF SRAM1_IO5_PIN  (.O(), .I(1'b0), .T(1'b1),        .IO(SRAM1_IO5));
-IOBUF SRAM1_IO4_PIN  (.O(), .I(1'b0), .T(1'b1),        .IO(SRAM1_IO4));
-IOBUF SRAM1_IO3_PIN  (.O(), .I(1'b0), .T(1'b1),        .IO(SRAM1_IO3));
-IOBUF SRAM1_IO2_PIN  (.O(), .I(1'b0), .T(1'b1),        .IO(SRAM1_IO2));
-IOBUF SRAM1_IO1_PIN  (.O(), .I(1'b0), .T(1'b1),        .IO(SRAM1_IO1));
-IOBUF SRAM1_IO0_PIN  (.O(), .I(1'b0), .T(1'b1),        .IO(SRAM1_IO0));
-OBUF  SRAM1_CE2_PIN  (.I(1'b1),                        .O(SRAM1_CE2));
-OBUF  SRAM1_UB2_PIN  (.I(1'b1),                        .O(SRAM1_UB2));
-OBUF  SRAM1_LB2_PIN  (.I(1'b1),                        .O(SRAM1_LB2));
-
-// VGA Port
-//---------------------------------------
-OBUF  VGA_R_PIN      (.I(1'b0),                        .O(VGA_R));
-OBUF  VGA_G_PIN      (.I(1'b0),                        .O(VGA_G));
-OBUF  VGA_B_PIN      (.I(1'b0),                        .O(VGA_B));
-OBUF  VGA_HS_PIN     (.I(1'b0),                        .O(VGA_HS));
-OBUF  VGA_VS_PIN     (.I(1'b0),                        .O(VGA_VS));
-
-
 endmodule // openMSP430_fpga
-
